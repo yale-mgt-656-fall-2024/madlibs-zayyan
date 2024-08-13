@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Madlibs in MGT656/MGT660</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        let nouns = [];
+        let adjectives = [];
+        let adverbs = [];
+        let verbs = [];
+        let smileys = [];
+
+        function chooseRandom(anArray) {
+            return anArray[Math.floor(Math.random() * anArray.length)];
+        }
+
+        function renderStory() {
+            // Get all stories on the page
+            let stories = document.querySelectorAll('div.story');
+            // Choose one story at random
+            let story = chooseRandom(stories);
+            let storyContent = story.innerHTML;
+
+            // Each time you find the word "NOUN", replace it with
+            // a randomly selected noun from our list of nouns. This
+            // funny format "/NOUN/g" is called a "regular expression"
+            // and it is a way of specifying a pattern of letters.
+            storyContent = storyContent.replace(/NOUN/g, () => chooseRandom(nouns));
+
+            // Do a similar replacement for verbs, adjectives, and adverbs
+            storyContent = storyContent.replace(/ADJECTIVE/g, () => chooseRandom(adjectives));
+            storyContent = storyContent.replace(/ADVERB/g, () => chooseRandom(adverbs));
+            storyContent = storyContent.replace(/VERB/g, () => chooseRandom(verbs));
+            
+
+            document.querySelector('#rendered-story').innerHTML = storyContent;
+        }
+    </script>
+
+    <!-- Feel free to add your own nouns, verbs, adverbs, and adjectives! -->
+    <script src="js/verbs/kyle.js"></script>
+    <script src="js/adverbs/kyle.js"></script>
+    <script src="js/nouns/kyle.js"></script>
+    <script src="js/adjectives/kyle.js"></script>
+</head>
+
+<body>
+
+
+    <div>
+        <button>New story</button>
+    </div>
+    <div id="rendered-story"></div>
+
+    <!-- Feel free to add your own stories! -->
+    <div class="story">
+        The ADJECTIVE NOUN VERBs over the ADJECTIVE NOUN.
+    </div>
+    <div class="story">
+        NOUN and NOUN VERB togther ADVERB and in peace, for such is their nature.
+    </div>
+
+    <script>
+        // When the button is clicked, run the `renderStory` function
+        const button = document.querySelector('button');
+        button.addEventListener('click', renderStory);
+
+        // Run it once when the page is loaded.
+        renderStory();
+    </script>
+</body>
+
+</html>
