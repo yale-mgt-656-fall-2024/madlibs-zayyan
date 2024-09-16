@@ -1,0 +1,9 @@
+{
+    "name": "MGT656 Madlibs Codespace",
+    "extensions": [
+        "ms-vscode.live-server"
+    ],
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    }
+}
