@@ -11,13 +11,11 @@ one person needs to follow these instructions (but all should read them 🤣)
 Technically you are "cloning" the starter repo. GitHub calls this "forking" because they add some other
 bells and whistles on top. You should see a grey button at the top that says "fork"---that is what you want. If you need more information, look at [https://help.github.com/articles/fork-a-repo/](https://help.github.com/articles/fork-a-repo/)
 
-4) Clone the repo to your development environment: your computer or Cloud9. Typically to clone
-you'd do something like `git clone YOUR-REPO-ADDRESS-HERE`. It's best to use the "ssh" clone URL
-instead of the "https" URL so that you don't have to keep typing your password. That will only
-be possible if you've got your ssh keys set up with GitHub already, which most people
-did Tuesday in class.
- 
-5) "Preview" the `index.html` file in Cloud9 to see the app working on your computer. 
+3) Open a new "CodeSpace" on GitHub. This will start an in-browser
+instance of the popular Visual Studio Code editor. (If you're a ninja,
+clearly do whatever you want instead.)
+
+4) Right-click on the `index.html` file and then click "Show Preview". You can either make it public or preview in browser. It doesn't matter.
 
 6) Take a look around at the files. Familiarize yourself where everything lives. 
 
@@ -37,7 +35,9 @@ your branch name might be "fire-lion-new-stories" or "rad-verbs-for-class-by-sle
 
 You should choose a name other than "bald-chicken.js". 
 
-8) Check your code works. Did you break the app? No? Great!
+8) If you added a new file, make sure you include it from `index.html`.
+
+8) Check your code works. Did you break the app? No? Great! (You can check the preview to see if it works as expected. Do you see your new content? Also you can run `npm test` from the terminal to run some automated sanity tests.)
 
 9) Commit your changes and share them
 
