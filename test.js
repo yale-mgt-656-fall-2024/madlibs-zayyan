@@ -19,16 +19,45 @@ let adjectives = [];
 let adverbs = [];
 let verbs = [];
 
+let hadError = false;
+
+
+function getArrayLength(category) {
+    switch (category) {
+        case 'nouns':
+            return nouns.length;
+        case 'adjectives':
+            return adjectives.length;
+        case 'adverbs':
+            return adverbs.length;
+        case 'verbs':
+            return verbs.length;
+        default:
+            throw new Error(`Invalid category: ${category}`);
+    }
+}
+
 // Load word files
 function loadWordFiles(category) {
     const dir = path.join(__dirname, 'js', category);
     const files = fs.readdirSync(dir);
-    files.forEach(file => {
+    for (const file of files) {
         if (file.endsWith('.js')) {
+            let lengthBefore = getArrayLength(category);
             const content = fs.readFileSync(path.join(dir, file), 'utf8');
-            eval(content);
+            try {
+                eval(content);
+            } catch (error) {
+                console.error(`❌ js/${category}/${file} threw an error:`, error);
+                hadError = true;
+            }
+            let lengthAfter = getArrayLength(category);
+            if (lengthAfter === lengthBefore) {
+                console.error(`❌ js/${category}/${file} did not add any ${category}`);
+                hadError = true;
+            }
         }
-    });
+    }
 }
 
 ['nouns', 'adjectives', 'adverbs', 'verbs'].forEach(loadWordFiles);
@@ -36,41 +65,46 @@ function loadWordFiles(category) {
 // Test functions
 function testArrays() {
     const arrays = { nouns, adjectives, adverbs, verbs };
-    Object.entries(arrays).forEach(([name, array]) => {
-        console.log(`Testing ${name}:`);
+    for (const [name, array] of Object.entries(arrays)) {
         if (!Array.isArray(array)) {
             console.error(`❌ ${name} is not an array`);
-            return;
+            hadError = true;
+            continue;
         }
         if (array.length === 0) {
             console.error(`❌ ${name} array is empty`);
-            return;
+            hadError = true;
+            continue;
         }
-        array.forEach((item, index) => {
+        for (let index = 0; index < array.length; index++) {
+            const item = array[index];
             if (typeof item !== 'string') {
                 console.error(`❌ ${name}[${index}] is not a string`);
+                hadError = true;
             } else if (item.trim() !== item) {
                 console.error(`❌ ${name}[${index}] "${item}" has leading/trailing whitespace`);
+                hadError = true;
             }
-        });
-        console.log(`✅ ${name} passed validation`);
-    });
+        }
+        if (!hadError) {
+            console.log(`✅ ${name} passed validation`);
+        }
+    }
 }
 
 function testRenderStory() {
-    console.log('\nTesting renderStory function:');
     const renderStory = dom.window.renderStory;
     if (typeof renderStory !== 'function') {
         console.error('❌ renderStory is not a function');
         return;
     }
-    
+
     renderStory();
     const renderedStory = document.querySelector('#rendered-story').innerHTML;
-    
-    if (renderedStory.includes('NOUN') || 
-        renderedStory.includes('VERB') || 
-        renderedStory.includes('ADJECTIVE') || 
+
+    if (renderedStory.includes('NOUN') ||
+        renderedStory.includes('VERB') ||
+        renderedStory.includes('ADJECTIVE') ||
         renderedStory.includes('ADVERB')) {
         console.error('❌ renderStory did not replace all placeholders');
     } else {
@@ -81,3 +115,7 @@ function testRenderStory() {
 // Run tests
 testArrays();
 testRenderStory();
+
+if (hadError) {
+    process.exit(1);
+}
